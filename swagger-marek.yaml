@@ -1,0 +1,32 @@
+swagger: '2.0'
+info:
+  title: 'marek_import_test'
+  description: Marek's test with yaml file
+  version: 1.0.0
+paths:
+  /elements:
+    get:
+      summary: Retrieves a list of elements
+      description: |
+        Returns a list of elements
+      produces:
+        - application/json
+      x-amazon-apigateway-auth:
+        type: none
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:marek_python/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "id": "1"
+            }
+      responses:
+        '200':
+          description: Successful response
+        '404':
+          description: Item not found
+        '500':
+          description: Internal error
