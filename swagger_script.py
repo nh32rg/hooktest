@@ -94,5 +94,7 @@ def main():
     process_file(args.source_file_path, args.destination_file_path)
 
 
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+#    main()
+
+process_file(‘swagger-marek.yaml’,’swagger-tranform.yaml’)
