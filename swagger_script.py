@@ -97,4 +97,4 @@ def main():
 #if __name__ == '__main__':
 #    main()
 
-process_file('swagger-marek.yaml','swagger-tranform.yaml')
+process_file('swagger-marek.yaml','swagger-transform.yaml')
