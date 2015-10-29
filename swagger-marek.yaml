@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: 'marek_import_test'
-  description: Marek's test with yaml file
+  title: ’nfh_import_test'
+  description: Neil’s test with yaml file
   version: 1.0.0
 paths:
   /elements:
