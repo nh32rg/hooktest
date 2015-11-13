@@ -1,0 +1,603 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: 'DSP Cloud Administration API'
+basePath: /dspCloud/admin/1_0
+paths:
+  /organizations:
+    get:
+      summary: Return organizations.
+      description: Gets a list of organization objects.
+      operationId: listOrganizations
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: limit
+          description: Page limit (default 20)
+          required: false
+          type: integer
+        - in: query
+          name: offset
+          description: Page begin (default 0)
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Organizations'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminOrganization/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "list",
+              "payload": {
+                "id" : "$input.params('limit')",
+                "offset" : "$input.params('offset')"
+              }
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    post:
+      summary: Create an organization.
+      operationId: addOrganization
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: New organization to be added.
+          required: true
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Organization'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminOrganization/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "create",
+              "payload": $input.json('$')
+            }
+        responses:
+          "default":
+            statusCode: "200"
+  /organizations/{id}:
+    get:
+      summary: Return an organization.
+      operationId: getOrganization
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the requested organization.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Organization'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminOrganization/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "read",
+              "payload": {
+                "id" : "$input.params('id')"
+              }
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    put:
+      summary: Replace an organization.
+      operationId: replaceOrganization
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the organization to update.
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: New organization to be added.
+          required: true
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Organization'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminOrganization/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "replace",
+              "payload": $input.json('$')
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    patch:
+      summary: Update an organization.
+      operationId: updateOrganization
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the organization to update.
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: New organization to be added.
+          required: true
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Organization'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminOrganization/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "update",
+              "payload": $input.json('$')
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    delete:
+      summary: Delete and organization.
+      description: Deletes the organization if there are no associated accounts.
+      operationId: deleteOrganization
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the organization to delete.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Organization'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminOrganization/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "delete",
+              "payload": {
+                "id" : "$input.params('id')"
+              }
+            }
+        responses:
+          "default":
+            statusCode: "200"
+  /organizations/{id}/accounts:
+    get:
+      summary: Return accounts belonging to an organization.
+      description: Gets a list of account objects.
+      operationId: listAccounts
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the organization.
+          required: true
+          type: string
+        - in: query
+          name: limit
+          description: Page limit (default 20)
+          required: false
+          type: integer
+        - in: query
+          name: offset
+          description: Page begin (default 0)
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Accounts'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminAccount/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "list",
+              "payload": {
+                "organizationId" : "$input.params('id')",
+                "limit" : "$input.params('limit')",
+                "offset" : "$input.params('offset')"
+              }
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    post:
+      summary: Create an account.
+      operationId: addAccount
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the organization.
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: New organization to be added.
+          required: true
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Account'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminAccount/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "create",
+              "payload": $input.json('$')
+            }
+        responses:
+          "default":
+            statusCode: "200"            
+  /organizations/{id}/accounts/{accountId}:
+    get:
+      summary: Return an account belonging to an organization.
+      operationId: getAccount
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the requested organization.
+          required: true
+          type: string
+        - in: path
+          name: accountId
+          description: The account id.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Account'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminAccount/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "read",
+              "payload": {
+                "organizationId" : "$input.params('id')",
+                "id" : "$input.params('accountId')"
+              }
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    put:
+      summary: Replace an account.
+      operationId: replaceAccount
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the requested organization.
+          required: true
+          type: string
+        - in: path
+          name: accountId
+          description: The account id.
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: New account to be added.
+          required: true
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Account'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminAccount/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "replace",
+              "payload": $input.json('$')
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    patch:
+      summary: Update an account.
+      operationId: updateAccount
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the requested organization.
+          required: true
+          type: string
+        - in: path
+          name: accountId
+          description: The account id.
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: New account to be added.
+          required: true
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Account'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminAccount/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "update",
+              "payload": $input.json('$')
+            }
+        responses:
+          "default":
+            statusCode: "200"
+    delete:
+      summary: Delete an Account.
+      description: Deletes the account.
+      operationId: deleteAccount
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the requested organization.
+          required: true
+          type: string
+        - in: path
+          name: accountId
+          description: The account id.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operation successful.
+          schema:
+            $ref: '#/definitions/Account'
+      x-amazon-apigateway-integration:
+        type: aws
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576608032189:function:AdminAccount/invocations
+        credentials: arn:aws:iam::576608032189:role/lambda_gateway_execution
+        httpMethod: POST
+        requestTemplates:
+          application/json: |
+            {
+              "operation": "delete",
+              "payload": {
+                "id" : "$input.params('accountId')"
+              }
+            }
+        responses:
+          "default":
+            statusCode: "200"
+definitions:
+  Organizations:
+    type: object
+    properties:
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/Organization'
+  Organization:
+    type: object
+    required:
+      - id
+      - type
+      - name
+      - address
+    properties:
+      id:
+        type: string
+        format: com.boaweb.objectid
+        description: Unique organization identifier.
+      type:
+        type: string
+        description: Always 'oganizationType' for this object.
+      name:
+        type: string
+        description: The organizations name.
+      address:
+        $ref: '#/definitions/Address'
+        description: The organizations address.
+      avatar:
+        type: string
+        description: Path to the organizations avatar.
+      description:
+        type: string
+        description: Description of the organization.
+      enabled:
+        type: boolean
+        description: Determines if the organization, and all associated accounts, are enabled.
+  Address:
+    type: object
+    required:
+      - address1
+      - region
+      - city
+      - country
+    properties:
+      number:
+        type: string
+      address1:
+        type: string
+      address2:
+        type: string
+      region:
+        type: string
+      city:
+        type: string
+      postalCode:
+        type: string
+      country:
+        type: string
+  Accounts:
+    type: object
+    properties:
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/Account'
+  Account:
+    type: object
+    required:
+      - id
+      - type
+      - organizationId
+      - username
+      - email
+      - password
+      - enabled
+      - expiryDate
+      - language
+    properties:
+      id:
+        type: string
+        format: com.boaweb.objectid
+        description: Unique account identifier.
+      type:
+        type: string
+        description: Always 'accountType' for this object.
+      organizationId:
+        type: string
+        format: uuid
+        description: The 'id' of the organization that this account belongs to.
+      username:
+        type: string
+        description: A unique userId for this account.
+      email:
+        type: string
+        description: The email address of the user for this account.
+      password:
+        type: string
+        description: Encrypted password for this account.
+      enabled:
+        type: boolean
+        description: Indicates if the account is enabled, thereby allowing the associated user to perform operations allowed for their role set.
+      createdDate:
+        type: string
+        description: Date/Time (ZULU) when the account has been created. Follows the form 2015-10-19T14:30:59+0000.
+      modifiedDate:
+        type: string
+        description: Date/Time (ZULU) when the account has been last modified. Follows the form 2015-10-19T14:30:59+0000.
+      expiryDate:
+        type: string
+        description: Date/Time (ZULU) of the account expiry. Follows the form 2015-10-19T14:30:59+0000.
+      language:
+        type: string
+        description: The two digit language identifier preferred for this account (ISO 639-1).
+      avatar:
+        type: string
+        description: The path to the avatar file of the user associated to this account.
+      role:
+        type: array
+        items:
+          $ref: '#/definitions/Role'
+
+  Role:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: The name of the role.
+      filter:
+        type: [string]
+        description: An array of filters.
+

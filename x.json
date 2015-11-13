@@ -1,0 +1,4 @@
+{
+  "URL": "https://foo:bar@example.com/",
+  "OTHER": "foo \" bar 'baz'"
+}
