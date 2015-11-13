@@ -1,0 +1,86 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Metadata": {
+	"AWS::CloudFormation::Designer": {
+  	"d16b36a9-0759-42d3-b342-0a4fc2184822": {
+    	"size": {
+      	"width": 60,
+      	"height": 60
+    	},
+    	"position": {
+      	"x": 163,
+      	"y": 121
+    	},
+    	"z": 0
+  	},
+  	"37a402c3-09a8-4606-99f6-142aa07551b1": {
+    	"size": {
+      	"width": 60,
+      	"height": 60
+    	},
+    	"position": {
+      	"x": 118,
+      	"y": 268
+    	},
+    	"z": 0
+  	}
+	}
+  },
+  "Resources": {
+	"IAMR57XI8": {
+  	"Type": "AWS::IAM::Role",
+  	"Properties": {
+                    	"AssumeRolePolicyDocument": {
+       	"Version": "2012-10-17",
+      	"Statement": [{
+   "Effect": "Allow",
+   "Action": ["sts:AssumeRole"],
+        	"Principal": {
+                 	"Service": [ "lambda.amazonaws.com" ]
+              	}   }]
+    	},
+        	"Path": "/",
+        	"Policies": [ {
+           	"PolicyName": "root",
+           	"PolicyDocument": {
+              	"Version" : "2012-10-17",
+              	"Statement": [ {
+                 	"Effect": "Allow",
+                 	"Action": "*",
+                 	"Resource": "*"
+              	} ]
+           	}
+           	} ]
+    	
+  	},
+  	"Metadata": {
+    	"AWS::CloudFormation::Designer": {
+      	"id": "d16b36a9-0759-42d3-b342-0a4fc2184822"
+    	}
+  	}
+	},
+	"IAMR1M99A": {
+  	"Type": "AWS::Lambda::Function",
+  	"Properties": {
+        	"Handler": "test.lambda_handler",
+    	"Role": {
+      	"Fn::GetAtt": [
+        	"IAMR57XI8",
+        	"Arn"
+   	]
+    	},
+    	"Code": {
+      	"S3Bucket": "avtestbucket",
+      	"S3Key": "test.zip"
+    	},
+    	"Runtime": "nodejs",
+    	"Timeout": "25"
+  	},
+  	"Metadata": {
+    	"AWS::CloudFormation::Designer": {
+      	"id": "37a402c3-09a8-4606-99f6-142aa07551b1"
+    	}
+  	}
+	}
+  }
+}
